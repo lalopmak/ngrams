@@ -49,7 +49,7 @@ corpus = reduce(append_file,sources,'')
 
 #counts the ngrams; converts them all to lowercase
 ngrams = {}
-for i in range(len(corpus)):
+for i in range(len(corpus) - n + 1):
     ngram = corpus[i:i+n].lower()
     if ngram in ngrams:
         ngrams[ngram] += 1
@@ -57,7 +57,7 @@ for i in range(len(corpus)):
         ngrams[ngram] = 1
 
 #ngram counts as sorted list of tuples (ngram [str], count [int])
-sorted_ngram_counts =  sorted(ngrams.items(),key=operator.itemgetter(1),reverse=True)
+sorted_ngram_counts = sorted(ngrams.items(),key=operator.itemgetter(1),reverse=True)
 
 def str_repr(s):
     '''Preliminary function: represents an string in analyzer-readable format'''
