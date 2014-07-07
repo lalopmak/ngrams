@@ -60,15 +60,15 @@ for i in range(len(corpus) - n + 1):
 #ngram counts as sorted list of tuples (ngram [str], count [int])
 sorted_ngram_counts = sorted(ngram_counts.items(),key=operator.itemgetter(1),reverse=True)
 
-def str_repr(s):
-    '''Preliminary function: represents an string in analyzer-readable format'''
-    return repr(s)[1:-1]
-    
+def ngram_repr(ngram):
+    '''Preliminary function: represents an ngram in analyzer-readable format'''
+    return repr(ngram)[1:-1]
+
 #converts ngram counts to str
 output = ""
 for ngram_count in sorted_ngram_counts:
     ngram, count = ngram_count
-    output += "{0} {1}\n".format(str_repr(ngram), count)
+    output += "{0} {1}\n".format(ngram_repr(ngram), count)
 
 if output_file:
     f = open(output_file, 'w')
