@@ -32,14 +32,14 @@ if not sources:
     parser.print_help()
     sys.exit(1)
 
-def append_file(previous_txt, name):
+def append_file(previous_txt, file_name):
     '''Given previous text and a file name, appends file contents to that previous text'''
     f = None
     try:
-        f = open(name)
+        f = open(file_name)
         return previous_txt + "\n" + f.read()
     except:
-        print "Error opening {0}".format(name)
+        print "Error opening {0}".format(file_name)
         sys.exit(1)
     finally:
         if f: f.close()
