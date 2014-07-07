@@ -44,20 +44,21 @@ def append_file(previous_txt, name):
     finally:
         if f: f.close()
 
-#combine all corpus files into single str
-corpus = reduce(append_file,sources,'')
+# combine all corpus files into single str,
+# then converts them all to lowercase
+corpus = reduce(append_file,sources,'').lower()
 
-#counts the ngrams; converts them all to lowercase
-ngrams = {}
+#counts the ngrams
+ngram_counts = {}
 for i in range(len(corpus) - n + 1):
-    ngram = corpus[i:i+n].lower()
-    if ngram in ngrams:
-        ngrams[ngram] += 1
+    ngram = corpus[i:i+n]
+    if ngram in ngram_counts:
+        ngram_counts[ngram] += 1
     else:
-        ngrams[ngram] = 1
+        ngram_counts[ngram] = 1
 
 #ngram counts as sorted list of tuples (ngram [str], count [int])
-sorted_ngram_counts = sorted(ngrams.items(),key=operator.itemgetter(1),reverse=True)
+sorted_ngram_counts = sorted(ngram_counts.items(),key=operator.itemgetter(1),reverse=True)
 
 def str_repr(s):
     '''Preliminary function: represents an string in analyzer-readable format'''
