@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 #  corpus2ngrams.py - Given corpus .txt(s), outputs number of occurences of n-grams 
 #  Copyright (c) 2014 lalop
 
@@ -14,7 +16,30 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import argparse, sys, operator
+
+# strings in the corpus to be replaced, and their replacement
+# generally used for "standardizing" different unicode chars pressed by
+# the same button
+corpus_replacements = [
+    # each element is a 2-tuple:
+    #    (unicode str of text to replace, unicode str of replacement text)
+    # e.g. (u"…",u"...")
+
+    #transformations to dots
+    (u"…",u"..."),
+
+    #dash transformations
+    (u"—",u"-"),
+
+    #quote transformations
+    (u"“",u'"'),
+    (u"”",u'"'),
+    (u"’",u"'"),
+    (u"’",u"'"),
+    (u"‘",u"'"),
+]
+
+import argparse, sys, operator, codecs
 
 py3 = sys.version_info[0] >= 3
 
@@ -41,7 +66,7 @@ def append_file(previous_txt, file_name):
     '''Given previous text and a file name, appends file contents to that previous text'''
     f = None
     try:
-        f = open(file_name)
+        f = codecs.open(file_name, encoding='utf-8')
         return previous_txt + "\n" + f.read()
     except:
         print("Error opening {0}".format(file_name))
@@ -52,6 +77,10 @@ def append_file(previous_txt, file_name):
 # combine all corpus files into single str,
 # then converts them all to lowercase
 corpus = reduce(append_file,sources,'').lower()
+
+#replaces substrings in corpus in accordance to corpus_replacements
+for orig, repl in corpus_replacements:
+    corpus = corpus.replace(orig, repl)
 
 #counts the ngrams
 ngram_counts = {}
@@ -67,12 +96,17 @@ sorted_ngram_counts = sorted(ngram_counts.items(),key=operator.itemgetter(1),rev
 
 def ngram_repr(ngram):
     '''Preliminary function: represents an ngram in analyzer-readable format'''
-    return repr(ngram)[1:-1]
+    #represents escapes (e.g. \n), removes delimiting quotes
+    if py3:
+        #repr looks like: 'e'
+        return repr(ngram)[1:-1]
+    else:
+        #repr looks like: u'e'
+        return repr(ngram)[2:-1]
 
 #converts ngram counts to str
 output = ""
-for ngram_count in sorted_ngram_counts:
-    ngram, count = ngram_count
+for ngram, count in sorted_ngram_counts:
     output += "{0} {1}\n".format(ngram_repr(ngram), count)
 
 if output_file:
