@@ -16,6 +16,11 @@
 
 import argparse, sys, operator
 
+py3 = sys.version_info[0] >= 3
+
+if py3:
+    from functools import reduce
+
 parser = argparse.ArgumentParser(description='Given corpus .txt(s), outputs number of occurences of n-grams')
 parser.add_argument('sources', type=str, nargs='*',
                    help='.txt file(s) for your corpus')
@@ -39,7 +44,7 @@ def append_file(previous_txt, file_name):
         f = open(file_name)
         return previous_txt + "\n" + f.read()
     except:
-        print "Error opening {0}".format(file_name)
+        print("Error opening {0}".format(file_name))
         sys.exit(1)
     finally:
         if f: f.close()
@@ -75,5 +80,5 @@ if output_file:
     f.write(output)
     f.close()
 else:
-    print output
+    print(output)
     
