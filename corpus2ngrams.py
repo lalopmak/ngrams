@@ -39,7 +39,7 @@ corpus_replacements = [
     (u"‘",u"'"),
 ]
 
-import argparse, sys, operator, codecs
+import argparse, sys, operator
 
 py3 = sys.version_info[0] >= 3
 
@@ -66,8 +66,8 @@ def append_file(previous_txt, file_name):
     '''Given previous text and a file name, appends file contents to that previous text'''
     f = None
     try:
-        f = codecs.open(file_name, encoding='utf-8')
-        return previous_txt + "\n" + f.read()
+        f = open(file_name) 
+        return previous_txt + "\n" + (f.read() if py3 else f.read().decode("UTF-8"))
     except:
         print("Error opening {0}".format(file_name))
         sys.exit(1)
