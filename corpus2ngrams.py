@@ -35,7 +35,6 @@ corpus_replacements = [
     (u"“",u'"'),
     (u"”",u'"'),
     (u"’",u"'"),
-    (u"’",u"'"),
     (u"‘",u"'"),
 ]
 
@@ -43,8 +42,7 @@ import argparse, sys, operator
 
 py3 = sys.version_info[0] >= 3
 
-if py3:
-    from functools import reduce
+if py3: from functools import reduce
 
 parser = argparse.ArgumentParser(description='Given corpus .txt(s), outputs number of occurences of n-grams')
 parser.add_argument('sources', type=str, nargs='*',
