@@ -95,20 +95,19 @@ sorted_ngram_counts = sorted(ngram_counts.items(),key=operator.itemgetter(1),rev
 def ngram_repr(ngram):
     '''Preliminary function: represents an ngram in analyzer-readable format'''
     #represents escapes (e.g. \n), removes delimiting quotes
-    if py3:
-        #repr looks like: 'e'
-        return repr(ngram)[1:-1]
-    else:
-        #repr looks like: u'e'
-        return repr(ngram)[2:-1]
+    return ngram.replace("\\","\\\\").replace("\n","\\n").replace("\t","\\t")
 
 #converts ngram counts to str
-output = ""
+output = u""
 for ngram, count in sorted_ngram_counts:
-    output += "{0} {1}\n".format(ngram_repr(ngram), count)
+    output += u"{0} {1}\n".format(ngram_repr(ngram), count)
 
 if output_file:
-    f = open(output_file, 'w')
+    if py3:
+        f = open(output_file, 'w')
+    else:
+        import codecs
+        f = codecs.open(output_file, mode="w", encoding="utf-8-sig")
     f.write(output)
     f.close()
 else:
