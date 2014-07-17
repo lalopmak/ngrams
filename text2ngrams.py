@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-#  text2ngrams.py - Given text(s), outputs number of occurences of n-grams 
+#  text2ngrams.py - Counts the n-grams in the given text(s)
 #  Copyright (c) 2014 lalop
 
 #  This program is free software: you can redistribute it and/or modify
@@ -44,10 +44,10 @@ py3 = sys.version_info[0] >= 3
 
 if py3: from functools import reduce
 
-parser = argparse.ArgumentParser(description='Given text(s), outputs number of occurences of n-grams.')
+parser = argparse.ArgumentParser(description='Counts the n-grams in the given text(s)')
 parser.add_argument('sources', type=str, nargs='*',
                    help='.txt file(s) for your text')
-parser.add_argument('-n', dest="n", default=1, help='The size of the n-grams whose data to output (default 1)')
+parser.add_argument('-n', dest="n", default=1, help='Size of the n-grams to be counted (default 1)')
 parser.add_argument('-o','--output', dest="output", default=None, help='File to which to output results. (If not given, prints the results to stdout.)') 
 
 args = vars(parser.parse_args())
@@ -56,7 +56,7 @@ output_file = args['output']
 n = int(args['n'])
 
 if not sources:
-    print("ERROR: No source files specified.\n")
+    print("ERROR: No source file(s) specified.\n")
     parser.print_help()
     sys.exit(1)
 
