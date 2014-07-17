@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-#  corpus2ngrams.py - Given corpus .txt(s), outputs number of occurences of n-grams 
+#  text2ngrams.py - Given text(s), outputs number of occurences of n-grams 
 #  Copyright (c) 2014 lalop
 
 #  This program is free software: you can redistribute it and/or modify
@@ -17,10 +17,10 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# strings in the corpus to be replaced, and their replacement
+# strings in the text to be replaced, and their replacement
 # generally used for "standardizing" different unicode chars pressed by
 # the same button
-corpus_replacements = [
+text_replacements = [
     # each element is a 2-tuple:
     #    (unicode str of text to replace, unicode str of replacement text)
     # e.g. (u"…",u"...")
@@ -44,9 +44,9 @@ py3 = sys.version_info[0] >= 3
 
 if py3: from functools import reduce
 
-parser = argparse.ArgumentParser(description='Given corpus .txt(s), outputs number of occurences of n-grams')
+parser = argparse.ArgumentParser(description='Given text(s), outputs number of occurences of n-grams.')
 parser.add_argument('sources', type=str, nargs='*',
-                   help='.txt file(s) for your corpus')
+                   help='.txt file(s) for your text')
 parser.add_argument('-n', dest="n", default=1, help='The size of the n-grams whose data to output (default 1)')
 parser.add_argument('-o','--output', dest="output", default=None, help='File to which to output results. (If not given, prints the results to stdout.)') 
 
@@ -72,18 +72,18 @@ def append_file(previous_txt, file_name):
     finally:
         if f: f.close()
 
-# combine all corpus files into single str,
+# combine all text files into single str,
 # then converts them all to lowercase
-corpus = reduce(append_file,sources,'').lower()
+text = reduce(append_file,sources,'').lower()
 
-#replaces substrings in corpus in accordance to corpus_replacements
-for orig, repl in corpus_replacements:
-    corpus = corpus.replace(orig, repl)
+#replaces substrings in text in accordance to text_replacements
+for orig, repl in text_replacements:
+    text = text.replace(orig, repl)
 
 #counts the ngrams
 ngram_counts = {}
-for i in range(len(corpus) - n + 1):
-    ngram = corpus[i:i+n]
+for i in range(len(text) - n + 1):
+    ngram = text[i:i+n]
     if ngram in ngram_counts:
         ngram_counts[ngram] += 1
     else:
